@@ -1,0 +1,23 @@
+<mat-sidenav-container>
+    <mat-sidenav opened mode="side">
+      <mat-list>
+        <mat-list-item> 
+          <button mat-button color="primary" (click)="setAction('alta')">Nuevo alumno</button>
+        </mat-list-item>
+        <mat-list-item>
+          <button mat-button color="primary" (click)="setAction('listado')">Listado Alumnos</button>
+        </mat-list-item>
+        
+        <mat-list-item>
+          <button mat-raised-button color="accent" (click)="reloadJson()" *ngIf="!listadoAlumnos.length">Recargar JSON</button>
+        </mat-list-item>
+       
+      </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+    <app-form-alta *ngIf="action=='alta'" (alumnoAgregar)="addAlumno($event)"></app-form-alta>
+    <app-form-alta *ngIf="action=='editar'" (alumnoActualizar)="updateAlumno($event)" [alumnoEditar]="alumnoEditar"></app-form-alta>
+    <app-listado-alumnos *ngIf="action=='listado'" [alumnos]="listadoAlumnos" (alumnoEditar)="editAlumno($event)" (alumnoEliminar)="removeAlumno($event)"></app-listado-alumnos>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>

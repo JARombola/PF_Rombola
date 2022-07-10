@@ -1,0 +1,82 @@
+[
+    {
+        "nombre": "Julio",
+        "apellido": "Bischof",
+        "email": "jbischof0@alexa.com",
+        "fechaNacimiento": "2008-04-28T12:51:15Z",
+        "activo": true,
+        "materia": "Música"
+    },
+    {
+        "nombre": "Cordelia",
+        "apellido": "McKevin",
+        "email": "cmckevin1@pen.io",
+        "fechaNacimiento": "1991-07-30T00:35:25Z",
+        "activo": false,
+        "materia": "Música"
+    },
+    {
+        "nombre": "Tate",
+        "apellido": "Sutherland",
+        "email": "tsutherland2@discovery.com",
+        "fechaNacimiento": "2002-07-23T07:32:22Z",
+        "activo": true,
+        "materia": "Música"
+    },
+    {
+        "nombre": "Delaney",
+        "apellido": "Crowcroft",
+        "email": "dcrowcroft3@topsy.com",
+        "fechaNacimiento": "1994-01-08T16:51:06Z",
+        "activo": false,
+        "materia": "Música"
+    },
+    {
+        "nombre": "Barbee",
+        "apellido": "Sherrock",
+        "email": "bsherrock4@theglobeandmail.com",
+        "fechaNacimiento": "2005-09-20T06:04:51Z",
+        "activo": false,
+        "materia": "Inglés"
+    },
+    {
+        "nombre": "Randene",
+        "apellido": "Swenson",
+        "email": "rswenson5@columbia.edu",
+        "fechaNacimiento": "1987-02-12T07:46:41Z",
+        "activo": false,
+        "materia": "Música"
+    },
+    {
+        "nombre": "Alex",
+        "apellido": "de Keyser",
+        "email": "adekeyser6@posterous.com",
+        "fechaNacimiento": "1993-07-12T15:32:13Z",
+        "activo": false,
+        "materia": "Inglés"
+    },
+    {
+        "nombre": "Chan",
+        "apellido": "Skey",
+        "email": "cskey7@accuweather.com",
+        "fechaNacimiento": "1985-05-04T10:29:45Z",
+        "activo": false,
+        "materia": "Inglés"
+    },
+    {
+        "nombre": "Tedd",
+        "apellido": "Halgarth",
+        "email": "thalgarth8@weebly.com",
+        "fechaNacimiento": "1984-05-30T05:03:24Z",
+        "activo": false,
+        "materia": "Computación"
+    },
+    {
+        "nombre": "Merrick",
+        "apellido": "Scrafton",
+        "email": "mscrafton9@wix.com",
+        "fechaNacimiento": "2000-12-12T15:09:33Z",
+        "activo": true,
+        "materia": "Inglés"
+    }
+]

@@ -1,0 +1,66 @@
+<h1 titulo>Alta de alumno</h1>
+<form [formGroup]="formAlumno" (ngSubmit)="submit()">
+    <mat-form-field appearance="fill">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+        <mat-error *ngIf="formAlumno.get('nombre')?.hasError('required')">
+          Campo <strong>requerido</strong>.
+        </mat-error>
+        <mat-error *ngIf="formAlumno.get('nombre')?.hasError('minlength')">
+          Mín. <strong>2 caracteres</strong>.
+        </mat-error>
+      </mat-form-field> 
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido">
+        <mat-error *ngIf="formAlumno.get('apellido')?.hasError('required')">
+          Campo <strong>requerido</strong>.
+        </mat-error>
+        <mat-error *ngIf="formAlumno.get('apellido')?.hasError('minlength')">
+          Mín. <strong>2 caracteres</strong>.
+        </mat-error>
+      </mat-form-field> 
+      
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha Nacimiento</mat-label>
+        <input matInput [max]="today" [matDatepicker]="picker" formControlName="fechaNacimiento">
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <!-- <div *ngIf="cNombre?.invalid && (cNombre?.dirty || cNombre?.touched)"  -->
+        <mat-error *ngIf="formAlumno.get('fechaNacimiento')?.hasError('required')">
+          Campo <strong>requerido</strong>.
+        </mat-error>
+        <mat-error *ngIf="formAlumno.get('fechaNacimiento')?.hasError('matDatepickerMax')">
+          Fecha <strong>inválida</strong> (Debe ser anterior al día de hoy).
+        </mat-error>
+      <!-- </div> -->
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" formControlName="email">
+        <mat-error *ngIf="formAlumno.get('email')?.hasError('required')">
+          Campo <strong>requerido</strong>.
+        </mat-error>
+        <mat-error *ngIf="formAlumno.get('email')?.hasError('email')">
+          Formato <strong>inválido</strong>.
+        </mat-error>
+      </mat-form-field> 
+
+      <mat-form-field appearance="fill">
+        <mat-label>Materia</mat-label>
+        <mat-select formControlName="materia">
+          <mat-option *ngFor = "let m of materias" [value]="m">{{m}}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="formAlumno.get('materia')?.hasError('required')">
+          Campo <strong>requerido</strong>.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-slide-toggle formControlName="activo">Activo</mat-slide-toggle>
+      <button mat-flat-button color="primary" type="submit" *ngIf="!alumnoEditar">Registrar</button>
+      <button mat-flat-button color="primary" type="submit" *ngIf="!!alumnoEditar">Actualizar</button>
+  </form>
