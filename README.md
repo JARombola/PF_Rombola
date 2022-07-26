@@ -1,27 +1,36 @@
-# 1PFRombola
+# Proyecto final: Entrega 1 - Rombolá Julián.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.1.
+# Funcionamiento
+Para el desarrollo del proyecto se hace uso de tres componentes:
+1) **Form-Alta:** Utilizado tanto para el alta de alumnos nuevos como para la modificación de los existentes.
+2) **Listado-Alumnos:** Utilizado para mostrar los alumnos registrados.
+3) **Main:** Utilizado como "orquestador" entre los dos componentes anteriores. Posee la lógica para la actualización (ABM) de los alumnos.
 
-## Development server
+## Alta de alumno
+Este módulo presenta un formulario con 5 campos, todos obligatorios y con las siguientes validaciones:
+- Nombre: Mínimo 2 caracteres.
+- Apellido: Mínimo 2 caracteres.
+- Fecha de Nacimiento: Anterior al día en curso.
+- Email: Formato válido.
+- Materia: Campo seleccionado.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Cuando se **Registra** un alumno, este envía la información al componente _Main_ para que lo agregue a la lista.
+Cuando se **Modifica** un alumno, este envía la información actualizada al componente _Main_ para que modifique el elemento correspondiente.
+Ambas acciones se realizan a través de eventos (_EventEmitter_).
 
-## Code scaffolding
+## Listado de Alumnos
+Este módulo presenta una tabla con la información de los alumnos registrados, donde la última columna de cada fila posee dos botones que permiten:
+- Editar la información del alumno correspondiente.
+- Eliminar el alumno correspondiente.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Cuando se presiona alguno de esos botones, estos generan el evento correspondiente para que el componente _Main_ realice la lógica adecuada.
 
-## Build
+# Información
+- El componente **Main** es el que funciona como "orquestador", ya que posee la lista de alumnos y la lógica para su manipulación (agregar elementos, modificarlos o eliminarlos).
+Por lo tanto, la comunicación con los otros dos componentes (**Form-Alta** y **Listado-alumnos**) por el momento se hace a través de variables @Input y @Output.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- El **pipe personalizado** se utiliza en **Listado-alumnos**, en la primer columna de la tabla (Línea #6).
 
-## Running unit tests
+- La **directiva personalizada** se utiliza en los encabezados tanto de **form-alta** como de **listado-alumnos** (Línea #1).
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- El listado inicial de alumnos se carga en el componente **Main**, y los datos se obtienen del archivo **alumnos.json** (Dentro de _assets_). (Si se eliminan todos los alumnos del listado, aparecerá un botón en la barra lateral para volver a cargarlos).
