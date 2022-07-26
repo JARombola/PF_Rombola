@@ -1,4 +1,4 @@
-<h1 titulo>Alta de alumno</h1>
+<h1 titulo>{{ index == -1 ? 'Alta ' : 'Modificación '}} de alumno</h1>
 <form [formGroup]="formAlumno" (ngSubmit)="submit()">
     <mat-form-field appearance="fill">
         <mat-label>Nombre</mat-label>
@@ -61,6 +61,5 @@
       </mat-form-field>
 
       <mat-slide-toggle formControlName="activo">Activo</mat-slide-toggle>
-      <button mat-flat-button color="primary" type="submit" *ngIf="!alumnoEditar">Registrar</button>
-      <button mat-flat-button color="primary" type="submit" *ngIf="!!alumnoEditar">Actualizar</button>
+      <button mat-flat-button color="primary" type="submit">{{ index == -1 ? 'Registrar' : 'Actualizar'}}</button>
   </form>

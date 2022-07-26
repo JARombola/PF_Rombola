@@ -1,7 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Alumno } from '../alumno';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { AlumnosService } from '../alumnos.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-form-alta',
@@ -11,23 +13,28 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class FormAltaComponent implements OnInit {
   today = new Date();
   formAlumno!: FormGroup;
-  
+  index!: number;
+
   materias = ['Computación', 'Inglés', 'Música'];
 
-  @Input() alumnoEditar!: Alumno;
-  @Input() alumnos!: Alumno[];
-
-  @Output() alumnoAgregar = new EventEmitter<Alumno>();
-  @Output() alumnoActualizar = new EventEmitter<Alumno>();
-
-
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar) {
+  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private alumnosService: AlumnosService, private route: ActivatedRoute) {
     this.fb = fb;
   }
   
 
-  ngOnInit(): void {
-    var alumno = this.alumnoEditar || <Alumno>{};
+  ngOnInit() {
+    var i = this.route.snapshot.paramMap.get('index');
+    if (i == null) this.index = -1;
+    else this.index = Number(i);
+    
+    var alumno = <Alumno>{};
+    if (this.index > -1 )
+      this.alumnosService.getAlumno(this.index).then( a => { alumno = a; this.setForm(alumno);});
+    
+      this.setForm(alumno);
+  }
+
+  setForm(alumno: Alumno) {
     this.formAlumno = this.fb.group({
       nombre: this.fb.control(alumno.nombre, [Validators.required, Validators.minLength(2)]),
       apellido: this.fb.control(alumno.apellido, [Validators.required, Validators.minLength(2)]),
@@ -40,15 +47,15 @@ export class FormAltaComponent implements OnInit {
   }
 
   submit() {
-    if (this.alumnoEditar) this.editAlumno();
-    else this.addAlumno();
+    if (this.index == -1) this.addAlumno()
+    else this.editAlumno();
   }
 
   addAlumno() {
     if (this.formAlumno.valid) {
       var nuevoAlumno: Alumno;
       nuevoAlumno = {...this.formAlumno.value};
-      this.alumnoAgregar.emit(nuevoAlumno);
+      this.alumnosService.addAlumno(nuevoAlumno);
       this._snackBar.open('Alumno registrado!', '✔️');
     }
   }
@@ -57,7 +64,7 @@ export class FormAltaComponent implements OnInit {
     if (this.formAlumno.valid) {
       var alumnoActualizado: Alumno;
       alumnoActualizado = {...this.formAlumno.value};
-      this.alumnoActualizar.emit(alumnoActualizado);
+      this.alumnosService.updateAlumno(this.index, alumnoActualizado);
       this._snackBar.open('Alumno actualizado!', '✔️');
     }
   }

@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = '1PF_Rombola';
+  title = '2PF_Rombola';
 }
 
