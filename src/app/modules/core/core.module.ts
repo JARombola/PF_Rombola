@@ -4,6 +4,7 @@ import { MainComponent } from '../../layout/main/main.component';
 import { TopbarComponent } from '../../layout/topbar/topbar.component';
 import { AlumnosService } from '../../alumnos.service';
 import { SharedModule } from '../shared/shared.module';
+import { AuthService } from 'src/app/auth.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { SharedModule } from '../shared/shared.module';
     TopbarComponent,
   ],
   providers: [
-    AlumnosService
+    AlumnosService,
+    AuthService
   ]
 })
 export class CoreModule { }

@@ -14,9 +14,11 @@ export class AlumnosService {
   }
 
   public loadAlumnos() {
+    var LINK = 'https://62eb098fad2954632597c5be.mockapi.io/students/alumnos';
     this.alumnos$ = new Promise<boolean>((res, _) => {
       this.httpClient
-          .get("assets/alumnos.json")
+          // .get("assets/alumnos.json")
+          .get(LINK)
           .subscribe(alumnos =>{
               this.listadoAlumnos = [];
               (<Alumno[]> alumnos).forEach(alumno => this.listadoAlumnos.push(alumno));

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { Alumno } from '../alumno';
 import { AlumnosService } from '../alumnos.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-listado-alumnos',
@@ -10,15 +11,18 @@ import { AlumnosService } from '../alumnos.service';
 })
 export class ListadoAlumnosComponent implements OnInit {
 
-  columnas = ["NombreCompleto", "Nombre", "Apellido", "FechaNacimiento", "Email", "Materia", "Activo", "Actions"];
+  columnas = ["NombreCompleto", "Nombre", "Apellido", "FechaNacimiento", "Email", "Materia", "Activo"];
 
   @ViewChild(MatTable)
     table!: MatTable<Alumno>;
   
-  constructor(public alumnosService: AlumnosService) {
+  constructor(public alumnosService: AlumnosService, private authS: AuthService) {
   }
 
   ngOnInit(): void {
+    this.columnas = ["NombreCompleto", "Nombre", "Apellido", "FechaNacimiento", "Email", "Materia", "Activo"];
+    if (this.authS.admin)
+      this.columnas.push('Actions');
   }
 
   eliminar(index: number){

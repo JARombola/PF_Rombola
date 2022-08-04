@@ -18,7 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TituloDirective } from '../../titulo.directive';
 import { NombreAlumnoPipe } from '../../nombre-alumno.pipe';
 import { RouterModule } from '@angular/router';
-
+import {MatCardModule} from '@angular/material/card';
 @NgModule({
   declarations: [  
     NombreAlumnoPipe,
@@ -41,6 +41,7 @@ import { RouterModule } from '@angular/router';
     MatSelectModule,
     MatSnackBarModule,
     MatTableModule,
+    MatCardModule,
     RouterModule
   ],
   exports: [
@@ -63,7 +64,8 @@ import { RouterModule } from '@angular/router';
     MatTableModule,
     NombreAlumnoPipe,
     TituloDirective,
-    RouterModule
+    RouterModule,
+    MatCardModule
   ]
 })
 export class SharedModule { }

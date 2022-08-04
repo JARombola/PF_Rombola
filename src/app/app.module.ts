@@ -13,17 +13,24 @@ import { RouterModule, Routes } from '@angular/router';
 import { CoreModule } from './modules/core/core.module';
 import { SharedModule } from './modules/shared/shared.module';
 import { ABMModule } from './modules/abm/abm.module';
+import { LoginComponent } from './login/login.component';
+import { AccesosGuard } from './accesos.guard';
+import { AdminGuardGuard } from './admin-guard.guard';
 
 const routes: Routes = [
-  { path: 'listado', component: ListadoAlumnosComponent },
-  { path: 'nuevo', component: FormAltaComponent },
-  { path: 'editar/:index', component: FormAltaComponent },
-  { path: '', redirectTo: '/listado', pathMatch: 'full'}
+  { path: 'login', component: LoginComponent },
+  { path: 'funciones', children: [
+    { path: 'listado', component: ListadoAlumnosComponent, canActivate: [AccesosGuard]},
+    { path: 'nuevo', component: FormAltaComponent, canActivate: [AdminGuardGuard] },
+    { path: 'editar/:index', component: FormAltaComponent, canActivate: [AdminGuardGuard] },
+  ] },
+  { path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
