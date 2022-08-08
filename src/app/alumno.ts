@@ -5,5 +5,5 @@ export interface Alumno {
     materia: string;
     activo: boolean;
     email: string;
-    index: number;
+    id: number
 }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Alumno } from './alumno';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Alumno } from '../alumno';
 
 @Injectable({
   providedIn: 'root'
@@ -8,35 +9,39 @@ import { Alumno } from './alumno';
 export class AlumnosService {
   listadoAlumnos: Alumno[] = [];
   alumnos$!: Promise<boolean>;
-  
-  constructor(private httpClient: HttpClient) { 
+  LINK = 'https://62eb098fad2954632597c5be.mockapi.io/students/alumnos';
+
+  constructor(private httpClient: HttpClient, private _snackBar: MatSnackBar ) { 
     this.loadAlumnos();
   }
 
   public loadAlumnos() {
-    var LINK = 'https://62eb098fad2954632597c5be.mockapi.io/students/alumnos';
+    
     this.alumnos$ = new Promise<boolean>((res, _) => {
       this.httpClient
           // .get("assets/alumnos.json")
-          .get(LINK)
+          .get(this.LINK)
           .subscribe(alumnos =>{
               this.listadoAlumnos = [];
               (<Alumno[]> alumnos).forEach(alumno => this.listadoAlumnos.push(alumno));
-              this.listadoAlumnos.forEach((alumno, i) => alumno.index = i);
+              // this.listadoAlumnos.forEach((alumno, i) => alumno.index = i);
               res(true);
           });
     });
   }
 
   public addAlumno(alumno: Alumno) {
+    this.httpClient.post(this.LINK, alumno).subscribe(() => this._snackBar.open('Alumno registrado.'));
     this.listadoAlumnos.push(alumno);
   }
 
   public removeAlumno(index: number) {
+    this.httpClient.delete(this.LINK + '/' + this.alumnos[index].id).subscribe(() => this._snackBar.open('Alumno eliminado.'));
     this.listadoAlumnos.splice(index, 1);
   }
 
   public updateAlumno(index: number, alumno: Alumno) {
+    this.httpClient.put(this.LINK + '/' + this.alumnos[index].id, alumno).subscribe(() => this._snackBar.open('Alumno actualizado.'));
     this.listadoAlumnos[index] = alumno;
   }
 
@@ -44,8 +49,6 @@ export class AlumnosService {
     await this.alumnos$;
     return new Promise(r => r(this.listadoAlumnos[index]));
   }
-
-
 
   public get alumnos () : Alumno[] {
     return this.listadoAlumnos;

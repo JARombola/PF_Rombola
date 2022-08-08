@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Alumno } from '../alumno';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import { AlumnosService } from '../alumnos.service';
 import { ActivatedRoute } from '@angular/router';
+import { AlumnosService } from '../services/alumnos.service';
 
 @Component({
   selector: 'app-form-alta',
@@ -42,7 +42,6 @@ export class FormAltaComponent implements OnInit {
       email: this.fb.control(alumno.email, [Validators.required, Validators.email]),
       activo: this.fb.control(alumno.activo, []),
       materia: this.fb.control(alumno.materia, [Validators.required]),
-      index: this.fb.control(alumno.index, [])
     });
   }
 

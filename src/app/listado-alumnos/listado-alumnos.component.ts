@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { Alumno } from '../alumno';
-import { AlumnosService } from '../alumnos.service';
-import { AuthService } from '../auth.service';
+import { AlumnosService } from '../services/alumnos.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-listado-alumnos',
