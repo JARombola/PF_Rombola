@@ -2,12 +2,33 @@
   <mat-sidenav opened mode="side">
     <mat-list>
       <mat-list-item> 
-        <button mat-button color="primary" routerLink='/funciones/nuevo'>Nuevo alumno</button>
+        <button mat-button color="primary" routerLink='/alumnos/nuevo'>Nuevo alumno</button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button color="primary" routerLink='/funciones/listado'>Listado Alumnos</button>
+        <button mat-button color="primary" routerLink='/alumnos/listado'>Alumnos</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button color="primary" routerLink='/cursos/nuevo'>Nuevo Curso</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button color="primary" routerLink='/cursos/listado'>Cursos</button>
       </mat-list-item>
       
+      <mat-list-item>
+        <button mat-button color="primary" routerLink='/usuarios/nuevo'>Nuevo Usuario</button>
+      </mat-list-item>
+      
+      <mat-list-item>
+        <button mat-button color="primary" routerLink='/usuarios/listado'>Usuarios</button>
+      </mat-list-item>
+      
+      <mat-list-item>
+        <button mat-button color="primary" (click)="logout()" routerLink='/'> Salir <mat-icon>logout</mat-icon>
+        </button>
+      </mat-list-item>
+      
+      <mat-slide-toggle style="margin-top: 100px" [checked]="authS.admin" (change)="authS.logAdmin()">Admin</mat-slide-toggle>
+
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content>

@@ -1,0 +1,31 @@
+<h1 titulo>Nuevo usuario</h1>
+<form [formGroup]="formUser" (ngSubmit)="submit()">
+    <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="user">
+        <mat-error *ngIf="formUser.get('user')?.hasError('required')">
+          Campo <strong>requerido</strong>.
+        </mat-error>
+        <mat-error *ngIf="formUser.get('user')?.hasError('minlength')">
+          Mín. <strong>3 caracteres</strong>.
+        </mat-error>
+      </mat-form-field> 
+
+    <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" formControlName="pass">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+        <mat-error *ngIf="formUser.get('pass')?.hasError('required')">
+          Campo <strong>requerido</strong>.
+        </mat-error>
+        <mat-error *ngIf="formUser.get('pass')?.hasError('minLength')">
+          Mín. <strong>3 caracteres</strong>.
+        </mat-error>
+      </mat-form-field> 
+
+      <mat-slide-toggle formControlName="admin">Admin</mat-slide-toggle>
+    
+      <button class="buttonFinal" mat-flat-button color="primary" type="submit">Registrar</button>
+</form>

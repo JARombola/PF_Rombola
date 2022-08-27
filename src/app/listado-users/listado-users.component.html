@@ -1,0 +1,21 @@
+<h1 titulo>Usuarios</h1>
+<table mat-table [dataSource]="authS.users" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="User">
+      <th mat-header-cell *matHeaderCellDef> User</th>
+      <td mat-cell *matCellDef="let usuario"> {{usuario.user}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="Actions">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let usuario; let i = index"> 
+          <button mat-icon-button coslor='warn' (click)="eliminar(i)">
+            <mat-icon aria-hidden="false">delete</mat-icon>
+          </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let alumno; columns: columnas;"></tr>
+
+  </table>

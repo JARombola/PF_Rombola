@@ -19,7 +19,7 @@ describe('LoginComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ LoginComponent ],
       imports: [
-        RouterTestingModule.withRoutes([{ path: '/funciones/listado'}]),
+        RouterTestingModule.withRoutes([{ path: '/alumnos/listado'}]),
           // {path: '/funciones/listado'}
         OverlayModule,
         BrowserAnimationsModule,

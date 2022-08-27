@@ -5,5 +5,7 @@ export interface Alumno {
     materia: string;
     activo: boolean;
     email: string;
-    id: number
+    id?: number;
+    curso: number;
+    alumnoId?:number;
 }

@@ -17,20 +17,41 @@ import { ABMModule } from './modules/abm/abm.module';
 import { LoginComponent } from './login/login.component';
 import { AccesosGuard } from './accesos.guard';
 import { AdminGuardGuard } from './admin-guard.guard';
+import { ListadoCursosComponent } from './listado-cursos/listado-cursos.component';
+import { AltaCursoComponent } from './alta-curso/alta-curso.component';
+import { AlumnosCursoComponent } from './alumnos-curso/alumnos-curso.component';
+import { FormUserComponent } from './form-user/form-user.component';
+import { ListadoUsersComponent } from './listado-users/listado-users.component';
+import { FormAlumnosCursoComponent } from './form-alumnos-curso/form-alumnos-curso.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-  { path: 'funciones', children: [
+  { path: 'alumnos', children: [
     { path: 'listado', component: ListadoAlumnosComponent, canActivate: [AccesosGuard]},
     { path: 'nuevo', component: FormAltaComponent, canActivate: [AdminGuardGuard] },
     { path: 'editar/:index', component: FormAltaComponent, canActivate: [AdminGuardGuard] },
-  ] },
+  ]
+  },
+  { path: 'cursos', children: [
+    { path: 'listado', component: ListadoCursosComponent, canActivate: [AccesosGuard]},
+    { path: 'nuevo', component: AltaCursoComponent, canActivate: [AdminGuardGuard] },
+    { path: 'alumnos/:index', component: AlumnosCursoComponent, canActivate: [AdminGuardGuard] },
+    { path: 'editar/:index', component: AltaCursoComponent, canActivate: [AdminGuardGuard] },
+    { path: 'alumnos/agregar/:indexCurso', component: FormAlumnosCursoComponent, canActivate: [AdminGuardGuard] },
+  ]
+  },
+  { path: 'usuarios', children: [
+    { path: 'listado', component: ListadoUsersComponent, canActivate: [AccesosGuard]},
+    { path: 'nuevo', component: FormUserComponent, canActivate: [AdminGuardGuard] },
+  ]
+  },
   { path: '', redirectTo: '/login', pathMatch: 'full'}
 ];
 
 @NgModule({
   declarations: [
     AppComponent,
+    FormAlumnosCursoComponent,
   ],
   imports: [
     BrowserModule,

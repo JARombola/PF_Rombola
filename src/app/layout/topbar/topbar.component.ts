@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class TopbarComponent implements OnInit {
 
-  constructor(private authS: AuthService) { }
+  constructor(protected authS: AuthService) { }
 
   ngOnInit(): void {
   }

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
 import { Alumno } from '../alumno';
 
 @Injectable({
@@ -9,14 +10,15 @@ import { Alumno } from '../alumno';
 export class AlumnosService {
   listadoAlumnos: Alumno[] = [];
   alumnos$!: Promise<boolean>;
-  LINK = 'https://62eb098fad2954632597c5be.mockapi.io/students/alumnos';
+  LINK = environment.LINK_ALUMNOS;
+
+  
 
   constructor(private httpClient: HttpClient, private _snackBar: MatSnackBar ) { 
     this.loadAlumnos();
   }
 
   public loadAlumnos() {
-    
     this.alumnos$ = new Promise<boolean>((res, _) => {
       this.httpClient
           // .get("assets/alumnos.json")
@@ -31,7 +33,10 @@ export class AlumnosService {
   }
 
   public addAlumno(alumno: Alumno) {
-    this.httpClient.post(this.LINK, alumno).subscribe(() => this._snackBar.open('Alumno registrado.'));
+    this.httpClient.post<Alumno>(this.LINK, alumno).subscribe((nuevo) => {
+      alumno.id = nuevo.id;
+      this._snackBar.open('Alumno registrado.')
+    });
     this.listadoAlumnos.push(alumno);
   }
 

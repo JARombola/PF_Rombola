@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
       var user = this.formLogin.get('user')?.value;
       var pass = this.formLogin.get('pass')?.value;
       var userType = this.authS.login(user, pass);
+      console.log(userType);
       this.wrongUser = false;
       switch(userType){
         case 'invalid': this.wrongUser = true; break;
@@ -44,7 +45,7 @@ export class LoginComponent implements OnInit {
         if (userType == 'admin')
         message += ' (Admin)';
         this._snackBar.open(message);
-        this.router.navigate(['/funciones/listado']);
+        this.router.navigate(['/alumnos/listado']);
       }
     }
     
