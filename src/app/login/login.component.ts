@@ -27,13 +27,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  submit() {
+  async submit() {
     this.submited = true;
     if (this.formLogin.valid) {
       var user = this.formLogin.get('user')?.value;
       var pass = this.formLogin.get('pass')?.value;
-      var userType = this.authS.login(user, pass);
-      console.log(userType);
+      var userType = await this.authS.login(user, pass);
       this.wrongUser = false;
       switch(userType){
         case 'invalid': this.wrongUser = true; break;

@@ -21,7 +21,7 @@ export class FormUserComponent implements OnInit {
     this.formUser = this.fb.group({
       user: this.fb.control("", [Validators.required, Validators.minLength(3)]),
       pass: this.fb.control("", [Validators.required, Validators.minLength(3)]),
-      admin: this.fb.control("", [Validators.required]),
+      admin: this.fb.control(false),
     });
   }
 

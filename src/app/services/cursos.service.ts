@@ -79,11 +79,12 @@ export class CursosService {
 
     var promise = Promise.resolve();
     selected.forEach(el => {
-      el.alumnoId = el.id;
-      delete el.id;
+      var n = {...el};
+      n.alumnoId = el.id;
+      delete n.id;
     promise = promise.then( () => {
       this.httpClient
-        .post<Alumno>(this.URLAlumnosCurso, el)
+        .post<Alumno>(this.URLAlumnosCurso, n)
         .subscribe();
       return new Promise( res => {
       setTimeout(res, INTERVAL);

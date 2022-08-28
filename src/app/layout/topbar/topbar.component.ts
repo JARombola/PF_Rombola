@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { AuthService } from 'src/app/services/auth.service';
+import { getUser } from 'src/app/state/usuarios/usuarios.selector';
 
 @Component({
   selector: 'app-topbar',
@@ -8,7 +10,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class TopbarComponent implements OnInit {
 
-  constructor(protected authS: AuthService) { }
+  constructor(private store: Store, private authS: AuthService) { }
+  user$ = this.store.select(getUser);
 
   ngOnInit(): void {
   }

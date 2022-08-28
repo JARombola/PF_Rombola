@@ -23,6 +23,9 @@ import { AlumnosCursoComponent } from './alumnos-curso/alumnos-curso.component';
 import { FormUserComponent } from './form-user/form-user.component';
 import { ListadoUsersComponent } from './listado-users/listado-users.component';
 import { FormAlumnosCursoComponent } from './form-alumnos-curso/form-alumnos-curso.component';
+import { StoreModule } from '@ngrx/store';
+import { alumnosReducer } from './state/alumnos/alumnos.reducer';
+import { userLog, usuarioReducer } from './state/usuarios/usuarios.reducer';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -61,7 +64,8 @@ const routes: Routes = [
     SharedModule,
     CoreModule,
     ABMModule,
-    OverlayModule
+    OverlayModule,
+    StoreModule.forRoot({alumnos: alumnosReducer, usuarios: usuarioReducer, user: userLog})
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'es-AR'},

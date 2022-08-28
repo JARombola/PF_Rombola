@@ -3,61 +3,69 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from 'src/environments/environment';
 import { Alumno } from '../alumno';
+import { Store } from '@ngrx/store';
+import { addStudent, removeStudent, setStudentsList, updateStudent } from '../state/alumnos/alumnos.actions';
+import { getAlumnos, selectAlumno, selectAlumnosList } from '../state/alumnos/alumnos.selector';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlumnosService {
-  listadoAlumnos: Alumno[] = [];
-  alumnos$!: Promise<boolean>;
   LINK = environment.LINK_ALUMNOS;
 
-  
-
-  constructor(private httpClient: HttpClient, private _snackBar: MatSnackBar ) { 
+  constructor(private httpClient: HttpClient, private _snackBar: MatSnackBar, private store: Store ) { 
     this.loadAlumnos();
   }
 
   public loadAlumnos() {
-    this.alumnos$ = new Promise<boolean>((res, _) => {
       this.httpClient
-          // .get("assets/alumnos.json")
-          .get(this.LINK)
+          .get<Alumno[]>(this.LINK)
           .subscribe(alumnos =>{
-              this.listadoAlumnos = [];
-              (<Alumno[]> alumnos).forEach(alumno => this.listadoAlumnos.push(alumno));
-              // this.listadoAlumnos.forEach((alumno, i) => alumno.index = i);
-              res(true);
-          });
+              this.store.dispatch(setStudentsList( {alumnos} ));
     });
   }
 
   public addAlumno(alumno: Alumno) {
-    this.httpClient.post<Alumno>(this.LINK, alumno).subscribe((nuevo) => {
-      alumno.id = nuevo.id;
-      this._snackBar.open('Alumno registrado.')
+    this.httpClient.post<Alumno>(this.LINK, alumno)
+                  .subscribe((nuevo) => {
+                      alumno.id = nuevo.id;
+                      this._snackBar.open('Alumno registrado ✅');
+                      this.store.dispatch(addStudent({student: alumno}));
     });
-    this.listadoAlumnos.push(alumno);
   }
 
   public removeAlumno(index: number) {
-    this.httpClient.delete(this.LINK + '/' + this.alumnos[index].id).subscribe(() => this._snackBar.open('Alumno eliminado.'));
-    this.listadoAlumnos.splice(index, 1);
+    this.store.select(getAlumnos)
+              .subscribe( alumnos => {
+                  var alumno = alumnos[index];
+                  this.httpClient
+                  .delete(this.LINK + '/' + alumno.id)
+                  .subscribe(() => { 
+                    this._snackBar.open('Alumno eliminado ✅');
+                    this.store.dispatch(removeStudent({index}));
+                  });
+              }).unsubscribe();
   }
 
   public updateAlumno(index: number, alumno: Alumno) {
-    this.httpClient.put(this.LINK + '/' + this.alumnos[index].id, alumno).subscribe(() => this._snackBar.open('Alumno actualizado.'));
-    this.listadoAlumnos[index] = alumno;
+    this.store.select(selectAlumno(index))
+              .subscribe( selected => {
+                  this.httpClient.put<Alumno>(this.LINK + '/' + selected.id, alumno)
+                                .subscribe((data) => {
+                                  alumno.id = data.id;
+                                  this._snackBar.open('Alumno actualizado.');
+                                  this.store.dispatch(updateStudent({index, alumno}));
+                                });
+                  })
+                  .unsubscribe();
   }
 
   public async getAlumno(index: number): Promise<Alumno> {
-    await this.alumnos$;
-    return new Promise(r => r(this.listadoAlumnos[index]));
+    return new Promise(r => 
+        this.store.select(selectAlumno(index))
+        .subscribe(selected => r(selected))
+        .unsubscribe()
+    );
   }
-
-  public get alumnos () : Alumno[] {
-    return this.listadoAlumnos;
-  }
-  
 
 }

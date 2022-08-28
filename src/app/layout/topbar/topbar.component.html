@@ -2,6 +2,6 @@
      <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon>menu</mat-icon>
     </button> -->
-    <span>Proyecto Final - Rombolá Julián {{ authS.user? '(User: ' + authS.user +')' : ''}}</span>
+    <span>Proyecto Final - Rombolá Julián {{ !!(user$ | async)!.user ? '(User: ' + (user$ | async)!.user +')' : ''}}</span>
     <span class="example-spacer"></span>
   </mat-toolbar>

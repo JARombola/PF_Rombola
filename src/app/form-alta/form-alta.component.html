@@ -50,16 +50,6 @@
         </mat-error>
       </mat-form-field> 
 
-      <mat-form-field appearance="fill">
-        <mat-label>Materia</mat-label>
-        <mat-select formControlName="materia">
-          <mat-option *ngFor = "let m of materias" [value]="m">{{m}}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="formAlumno.get('materia')?.hasError('required')">
-          Campo <strong>requerido</strong>.
-        </mat-error>
-      </mat-form-field>
-
       <mat-slide-toggle formControlName="activo">Activo</mat-slide-toggle>
       <button mat-flat-button color="primary" type="submit">{{ index == -1 ? 'Registrar' : 'Actualizar'}}</button>
   </form>

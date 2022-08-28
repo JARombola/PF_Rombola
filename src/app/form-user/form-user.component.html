@@ -6,7 +6,7 @@
         <mat-error *ngIf="formUser.get('user')?.hasError('required')">
           Campo <strong>requerido</strong>.
         </mat-error>
-        <mat-error *ngIf="formUser.get('user')?.hasError('minlength')">
+        <mat-error *ngIf="formUser.get('user')?.hasError('minLength')">
           Mín. <strong>3 caracteres</strong>.
         </mat-error>
       </mat-form-field> 

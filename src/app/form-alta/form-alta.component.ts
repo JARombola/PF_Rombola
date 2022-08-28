@@ -17,7 +17,7 @@ export class FormAltaComponent implements OnInit {
 
   materias = ['Computación', 'Inglés', 'Música'];
 
-  constructor(private fb: FormBuilder, private _snackBar: MatSnackBar, private alumnosService: AlumnosService, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private alumnosService: AlumnosService, private route: ActivatedRoute) {
     this.fb = fb;
   }
   
@@ -41,7 +41,6 @@ export class FormAltaComponent implements OnInit {
       fechaNacimiento: this.fb.control(alumno.fechaNacimiento, [Validators.required]),
       email: this.fb.control(alumno.email, [Validators.required, Validators.email]),
       activo: this.fb.control(alumno.activo, []),
-      materia: this.fb.control(alumno.materia, [Validators.required]),
     });
   }
 
@@ -55,7 +54,6 @@ export class FormAltaComponent implements OnInit {
       var nuevoAlumno: Alumno;
       nuevoAlumno = {...this.formAlumno.value};
       this.alumnosService.addAlumno(nuevoAlumno);
-      this._snackBar.open('Alumno registrado!', '✔️');
     }
   }
 
@@ -64,7 +62,6 @@ export class FormAltaComponent implements OnInit {
       var alumnoActualizado: Alumno;
       alumnoActualizado = {...this.formAlumno.value};
       this.alumnosService.updateAlumno(this.index, alumnoActualizado);
-      this._snackBar.open('Alumno actualizado!', '✔️');
     }
   }
 }

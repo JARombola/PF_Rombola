@@ -2,7 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { firstValueFrom } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { addUser, logout, removeUser, setLogued, setUsersList } from '../state/usuarios/usuarios.actions';
+import { selectUsuariosList } from '../state/usuarios/usuarios.selector';
 import { Usuario } from '../usuario';
 
 @Injectable({
@@ -10,24 +14,19 @@ import { Usuario } from '../usuario';
 })
 export class AuthService {
 
-  logged = false;
-  admin = false;
-  user = '';
   LINK = environment.LINK_USERS;
-  users: Usuario[] = [];
+  admin = false;
 
-  constructor(private router: Router, private httpClient: HttpClient, private _snackBar: MatSnackBar) { 
+  constructor(private router: Router, private httpClient: HttpClient, private _snackBar: MatSnackBar, private store: Store) { 
     this.getUsers();
-    //this.logAdmin();
   }
 
   getUsers() {
      this.httpClient
-         // .get("assets/alumnos.json")
-         .get(this.LINK)
-         .subscribe(users =>{
-             this.users = [];
-             (<Usuario[]> users).forEach(user => this.users.push(user));
+         .get<Usuario[]>(this.LINK)
+         .subscribe(users => {
+          this.store.dispatch(setUsersList({users}));
+          this.store.select(selectUsuariosList);
          });
  }
 
@@ -37,44 +36,51 @@ export class AuthService {
     .subscribe(datos => {
       nuevoUser.id = datos.id;
       this._snackBar.open('Usuario registrado.✔')
-      this.users.push(nuevoUser);
+      this.store.dispatch(addUser({user: nuevoUser}));
     });
  }
 
  eliminarUser(index: number) {
-  if (this.users.length > 1) {
-    var url = this.LINK + '/' + this.users[index].id;
-    this.httpClient
-    // .get("assets/alumnos.json")
-    .delete(url)
-    .subscribe(() => this._snackBar.open('Usuario eliminado ✔.'));
-    this.users.splice(index, 1);
-  } else {
-    this._snackBar.open('No se puede eliminar el único usuario existente ❌.');
-  }
+  this.store.select(selectUsuariosList)
+            .subscribe(users => {
+              if (users.length > 1) {
+                var url = this.LINK + '/' + users[index].id;
+                this.httpClient
+                .delete(url)
+                .subscribe(() =>{
+                  this._snackBar.open('Usuario eliminado ✔.');
+                  this.store.dispatch(removeUser({index}));
+                });
+              } else {
+                this._snackBar.open('No se puede eliminar el único usuario existente ❌.');
+              }
+            })
+            .unsubscribe();
+  
 }
 
-  login(user: string, pass: string): string {
-    var userLogueado = this.users.find(usuario => usuario.user == user && usuario.pass == pass);
+  async login(user: string, pass: string): Promise<string> {
+    var users = await firstValueFrom(this.store.select(selectUsuariosList));
+    var userLogueado = users.find(usuario => usuario.user == user && usuario.pass == pass);
+    this.admin = false;
     if (!!userLogueado) {
-      this.logged = true;
-      this.user = user;
-      if (userLogueado.admin)
+      this.store.dispatch(setLogued({user: userLogueado}));
+      if (userLogueado.admin) {
+        this.admin = true;
         return 'admin';
-      else return 'user';
+      }
+      return 'user';
     }
   return 'invalid';
   }
 
   logout() {
-    this.logged = false;
-    this.admin = false;
-    this.user = '';
+    this.store.dispatch(logout());
     this.router.navigate(['/']);
   }
 
   logAdmin() {
-    this.logged = !this.logged;
-    this.admin = !this.admin;
+    this.admin = true;
   }
+
 }
