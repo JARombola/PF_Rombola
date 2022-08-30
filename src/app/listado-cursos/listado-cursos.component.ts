@@ -12,7 +12,7 @@ import { selectCursosList } from '../state/cursos/cursos.selector';
   styleUrls: ['./listado-cursos.component.scss']
 })
 export class ListadoCursosComponent implements OnInit {
-  constructor(public cursosService: CursosService, private authS: AuthService, private store: Store) {
+  constructor(public cursosService: CursosService, protected authS: AuthService, private store: Store) {
   }
 
   x!: string;
@@ -25,9 +25,7 @@ export class ListadoCursosComponent implements OnInit {
   
 
   ngOnInit(): void {
-    this.columnas = ["Curso", "Horas", "Clases", "Profesor"];
-    if (this.authS.admin)
-      this.columnas.push('Actions');
+    this.columnas = ["Curso", "Horas", "Clases", "Profesor", 'Actions'];
   }
 
   eliminar(index: number){

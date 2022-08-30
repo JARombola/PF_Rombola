@@ -19,7 +19,7 @@ export class ListadoUsersComponent implements OnInit {
   users$ = this.store.select(selectUsuariosList);
 
   ngOnInit(): void {
-    this.columnas = ['User'];
+    this.columnas = ['User', 'Pass', 'Admin'];
     if (this.authS.admin)
       this.columnas.push('Actions');
   }

@@ -32,10 +32,10 @@
         <button mat-icon-button color='accent' [routerLink]="['/cursos/alumnos', i]">
             <mat-icon>group</mat-icon>
           </button>
-        <button mat-icon-button color='primary' [routerLink]="['/cursos/editar', i]">
+        <button mat-icon-button color='primary' [routerLink]="['/cursos/editar', i]" *ngIf="authS.admin">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color='warn' (click)="eliminar(i)">
+          <button mat-icon-button color='warn' (click)="eliminar(i)" *ngIf="authS.admin">
             <mat-icon aria-hidden="false">delete</mat-icon>
           </button>
       </td>

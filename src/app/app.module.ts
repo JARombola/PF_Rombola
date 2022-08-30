@@ -39,9 +39,9 @@ const routes: Routes = [
   { path: 'cursos', children: [
     { path: 'listado', component: ListadoCursosComponent, canActivate: [AccesosGuard]},
     { path: 'nuevo', component: AltaCursoComponent, canActivate: [AdminGuardGuard] },
-    { path: 'alumnos/:index', component: AlumnosCursoComponent, canActivate: [AdminGuardGuard] },
+    { path: 'alumnos/:index', component: AlumnosCursoComponent, canActivate: [AccesosGuard] },
     { path: 'editar/:index', component: AltaCursoComponent, canActivate: [AdminGuardGuard] },
-    { path: 'alumnos/agregar/:indexCurso', component: FormAlumnosCursoComponent, canActivate: [AdminGuardGuard] },
+    { path: 'alumnos/agregar/:indexCurso', component: FormAlumnosCursoComponent, canActivate: [AccesosGuard] },
   ]
   },
   { path: 'usuarios', children: [
