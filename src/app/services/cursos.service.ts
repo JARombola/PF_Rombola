@@ -1,67 +1,80 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
 import { Alumno } from '../alumno';
 import { Curso } from '../curso';
+import { addCourse, removeCourse, setCoursesList, updateCourse } from '../state/cursos/cursos.actions';
+import { selectCurso } from '../state/cursos/cursos.selector';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CursosService {
 
-  cursos: Curso[] = [];
   curso$!: Promise<boolean>;
   alumnosCurso: Alumno[] = [];
   LINK = environment.LINK_CURSOS;
   URLAlumnosCurso = '';
 
-  constructor(private httpClient: HttpClient, private _snackBar: MatSnackBar ) { 
+  constructor(private httpClient: HttpClient, private _snackBar: MatSnackBar, private store: Store) { 
     this.loadCursos();
   }
 
   loadCursos() {
      this.curso$ = new Promise<boolean>((res, _) => {
       this.httpClient
-          // .get("assets/alumnos.json")
-          .get(this.LINK)
+          .get<Curso[]>(this.LINK)
           .subscribe(cursos =>{
-              this.cursos = [];
-              (<Curso[]> cursos).forEach(alumno => this.cursos.push(alumno));
-              // this.listadoAlumnos.forEach((alumno, i) => alumno.index = i);
+              this.store.dispatch(setCoursesList({cursos}));
+              //this.cursos = [];
+              //(<Curso[]> cursos).forEach(alumno => this.cursos.push(alumno));
               res(true);
           });
     });
   }
 
    removeCurso(index: number) {
-    this.httpClient.delete(this.LINK + '/' + this.cursos[index].id).subscribe(() => this._snackBar.open('Curso eliminado.❌'));
-    this.cursos.splice(index, 1);
+    this.store.select(selectCurso(index))
+              .subscribe( curso => {
+                this.httpClient.delete(this.LINK + '/' + curso.id)
+                .subscribe(() => {
+                this._snackBar.open('Curso eliminado.❌')
+                this.store.dispatch(removeCourse({index}));
+              });
+    }).unsubscribe();
   }
 
   addCurso(nuevoCurso: Curso) {
     this.httpClient.post<Curso>(this.LINK, nuevoCurso).subscribe(datos => {
       nuevoCurso.id = datos.id;
-      this._snackBar.open('Curso registrado.✔')});
-    this.cursos.push(nuevoCurso);
+      this._snackBar.open('Curso registrado.✔');
+      this.store.dispatch(addCourse({curso: nuevoCurso}));
+    });
   }
   
   updateCurso(index: number, cursoActualizado: Curso) {
-    this.httpClient.put(this.LINK + '/' + this.cursos[index].id, cursoActualizado).subscribe(() => this._snackBar.open('Curso actualizado.✔'));
-    this.cursos[index] = cursoActualizado;
-  }
-
-  public async getCurso(index: number): Promise<Curso> {
-    await this.curso$;
-    return new Promise(r => r(this.cursos[index]));
+    this.store.select(selectCurso(index))
+              .subscribe(curso => {
+                  this.httpClient.put<Curso>(this.LINK + '/' + curso.id, cursoActualizado)
+                  .subscribe(() => {
+                    cursoActualizado.id = curso.id;
+                    this._snackBar.open('Curso actualizado.✔');
+                    this.store.dispatch(updateCourse({index, curso: cursoActualizado}));
+                  });
+    })
+    .unsubscribe();
   }
 
   // Guarda los alumnos del curso en la lista del servicio.
   async getAlumnosCurso (indexCurso: number):Promise<void> {
-    var idCurso = this.cursos[indexCurso].id;
+    return new Promise( (res, _) => {
+      this.store.select(selectCurso(indexCurso))
+      .subscribe(curso => {
+      var idCurso = curso.id;
     this.URLAlumnosCurso = this.LINK + '/' + idCurso + '/alumnosCurso';
     this.alumnosCurso = [];
-    return new Promise( (res, _) => {
         this.httpClient
         // .get("assets/alumnos.json")
       .get(this.URLAlumnosCurso)
@@ -71,7 +84,9 @@ export class CursosService {
             res();
             // this.listadoAlumnos.forEach((alumno, i) => alumno.index = i);
         });
+    }).unsubscribe();
     });
+    
   }
 
   addAlumnos(selected: Alumno[]) {

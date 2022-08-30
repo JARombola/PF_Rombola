@@ -3,6 +3,8 @@ import { MatTable } from '@angular/material/table';
 import { Curso } from '../curso';
 import { CursosService } from '../services/cursos.service';
 import { AuthService } from '../services/auth.service';
+import { Store } from '@ngrx/store';
+import { selectCursosList } from '../state/cursos/cursos.selector';
 
 @Component({
   selector: 'app-listado-cursos',
@@ -10,15 +12,17 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./listado-cursos.component.scss']
 })
 export class ListadoCursosComponent implements OnInit {
+  constructor(public cursosService: CursosService, private authS: AuthService, private store: Store) {
+  }
+
   x!: string;
   columnas: String[] = [];
+  cursos$ = this.store.select(selectCursosList);
 
   @ViewChild(MatTable)
     table!: MatTable<Curso>;
   
-  constructor(public cursosService: CursosService, private authS: AuthService) {
-  }
-
+  
 
   ngOnInit(): void {
     this.columnas = ["Curso", "Horas", "Clases", "Profesor"];

@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { firstValueFrom } from 'rxjs';
 import { Curso } from '../curso';
 import { CursosService } from '../services/cursos.service';
+import { selectCurso } from '../state/cursos/cursos.selector';
 
 @Component({
   selector: 'app-alta-curso',
@@ -15,7 +18,7 @@ export class AltaCursoComponent implements OnInit {
   formCurso!: FormGroup;
   curso: any;
 
-  constructor(private fb: FormBuilder, private cursosService: CursosService, private route: ActivatedRoute ) { }
+  constructor(private fb: FormBuilder, private cursosService: CursosService, private route: ActivatedRoute, private store: Store ) { }
 
   ngOnInit(): void {
     this.curso = <Curso>{};
@@ -27,7 +30,7 @@ export class AltaCursoComponent implements OnInit {
     
     var curso = <Curso>{};
     if (this.index > -1 )
-      this.cursosService.getCurso(this.index).then( a => { curso = a; this.setForm(curso);});
+      firstValueFrom(this.store.select(selectCurso(this.index))).then( a => { curso = a; this.setForm(curso);});
     
       this.setForm(curso);
   }

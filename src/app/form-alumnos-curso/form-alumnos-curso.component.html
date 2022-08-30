@@ -1,4 +1,4 @@
-<h1 titulo>Curso: {{cursosService.cursos[indexCurso].nombre}}</h1>
+<h1 titulo>Curso: {{(cursos$ | async)![indexCurso].nombre}}</h1>
 <h2>Alumnos disponibles</h2>
 <table mat-table [dataSource]="alumnosDisponibles" class="mat-elevation-z8">
 

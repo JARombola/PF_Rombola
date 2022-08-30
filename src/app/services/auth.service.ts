@@ -80,6 +80,10 @@ export class AuthService {
   }
 
   logAdmin() {
+    var fakeAdmin = new Usuario();
+    fakeAdmin.admin = true;
+    fakeAdmin.user = 'Fake Admin';
+    this.store.dispatch(setLogued({user: fakeAdmin}));
     this.admin = true;
   }
 

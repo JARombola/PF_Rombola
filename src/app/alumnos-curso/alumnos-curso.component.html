@@ -1,4 +1,4 @@
-<h1 titulo>Curso: {{cursosService.cursos[indexCurso].nombre}}</h1>         
+<h1 titulo>Curso: {{(cursos$ | async)![indexCurso].nombre}}</h1>         
 <div style="text-align: right;">
   <button mat-icon-button color='primary' [routerLink]="['/cursos/alumnos/agregar', indexCurso]">
     <mat-icon aria-hidden="false">group_add</mat-icon>

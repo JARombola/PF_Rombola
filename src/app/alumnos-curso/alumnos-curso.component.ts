@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Alumno } from '../alumno';
 import { AuthService } from '../services/auth.service';
 import { CursosService } from '../services/cursos.service';
+import { selectCursosList } from '../state/cursos/cursos.selector';
 
 @Component({
   selector: 'app-alumnos-curso',
@@ -19,7 +21,9 @@ export class AlumnosCursoComponent implements OnInit {
     table!: MatTable<Alumno>;
   
 
-  constructor(protected cursosService: CursosService, private authS: AuthService, private route: ActivatedRoute) { }
+  constructor(protected cursosService: CursosService, private authS: AuthService, private route: ActivatedRoute, private store: Store) { }
+
+  cursos$ = this.store.select(selectCursosList);
 
   ngOnInit(): void {
     this.indexCurso = Number(this.route.snapshot.paramMap.get('index'));

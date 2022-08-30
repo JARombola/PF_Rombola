@@ -1,12 +1,12 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTable } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Alumno } from '../alumno';
 import { AlumnosService } from '../services/alumnos.service';
 import { CursosService } from '../services/cursos.service';
 import { getAlumnos } from '../state/alumnos/alumnos.selector';
+import { selectCursosList } from '../state/cursos/cursos.selector';
 
 @Component({
   selector: 'app-form-alumnos-curso',
@@ -14,13 +14,13 @@ import { getAlumnos } from '../state/alumnos/alumnos.selector';
   styleUrls: ['./form-alumnos-curso.component.scss']
 })
 export class FormAlumnosCursoComponent implements OnInit {
+  constructor(protected cursosService: CursosService, protected alumnosService: AlumnosService, private route: ActivatedRoute, private router: Router, private store: Store) { }
 
   selection = new SelectionModel<Alumno>(true, []);
   indexCurso!: number;
   columnas = ['select', 'NombreCompleto'];
   alumnosDisponibles: Alumno[] = [];
-
-  constructor(protected cursosService: CursosService, protected alumnosService: AlumnosService, private route: ActivatedRoute, private router: Router, private store: Store) { }
+  cursos$ = this.store.select(selectCursosList);
 
   ngOnInit(): void {
     this.indexCurso = Number(this.route.snapshot.paramMap.get('indexCurso'));
